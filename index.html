@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eFootball Tournament</title>
+    <style>
+      /* RESET & BASE STYLES */
+      :root {
+        --bg: #0a0a0a;
+        --card-bg: rgba(
+          20,
+          20,
+          20,
+          0.7
+        ); /* Made slightly transparent for glass effect */
+        --text-main: #ffffff;
+        --text-muted: #aaaaaa;
+        --accent: #bb86fc;
+        --accent-glow: rgba(187, 134, 252, 0.2);
+        --border: #333333;
+        --font-stack: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-stack);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* --- ANIMATED BACKGROUND --- */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        z-index: -1;
+      }
+
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* --- HEADER --- */
+      header {
+        margin-top: 40px;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 20px;
+        background: linear-gradient(45deg, #fff, #aaa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      }
+
+      /* --- NAVIGATION --- */
+      nav {
+        display: flex;
+        gap: 10px;
+        padding: 5px;
+        background: rgba(20, 20, 20, 0.6);
+        backdrop-filter: blur(10px); /* Blur effect */
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 40px;
+      }
+
+      .nav-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        padding: 10px 25px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 40px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        color: var(--text-main);
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      }
+
+      .nav-btn.active {
+        background: var(--text-main);
+        color: var(--bg);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      }
+
+      /* --- CONTENT AREA --- */
+      main {
+        width: 100%;
+        max-width: 1000px;
+        padding: 0 20px;
+        padding-bottom: 50px;
+      }
+
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* --- WAITING MESSAGE --- */
+      .waiting-msg {
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        padding: 50px;
+        font-weight: 300;
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        background: rgba(20, 20, 20, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      /* --- TEAMS GRID --- */
+      .teams-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+      }
+
+      .team-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px); /* Glass effect */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+        position: relative;
+        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        cursor: help;
+      }
+
+      .team-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+        box-shadow: 0 10px 30px var(--accent-glow);
+        z-index: 10;
+      }
+
+      .team-name {
+        font-size: 1.1rem;
+        color: white;
+        font-weight: 700;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .team-icon-small {
+        font-size: 0.8rem;
+        opacity: 0.5;
+      }
+
+      /* --- TOOLTIP WIDGET --- */
+      .team-card:hover::after {
+        content: attr(data-members);
+        position: absolute;
+        bottom: -70px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #111;
+        color: #fff;
+        padding: 12px 15px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        width: 90%;
+        text-align: center;
+        border: 1px solid var(--accent);
+        z-index: 9999;
+        pointer-events: none;
+        white-space: pre-line;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .team-card:hover::before {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 6px;
+        border-style: solid;
+        border-color: var(--accent) transparent transparent transparent;
+        z-index: 9999;
+      }
+      .zb {
+        color: gray;
+      }
+      .zbb {
+        color: gray;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Ramadan LPM eFootball Tournament</h1>
+      <nav>
+        <button class="nav-btn active" onclick="switchTab('teams')">
+          Teams
+        </button>
+        <button class="nav-btn" onclick="switchTab('groups')">Groups</button>
+        <button class="nav-btn" onclick="switchTab('fixtures')">
+          Fixtures
+        </button>
+        <button class="nav-btn" onclick="switchTab('table')">Table</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- TEAMS TAB -->
+      <div id="teams" class="tab-content active">
+        <div class="teams-grid">
+          <!-- Team 1 -->
+          <div class="team-card" data-members="Adem Fadhli&#10;Wael Ayeb">
+            <div class="team-icon-small">🇮🇹</div>
+            <div class="team-name">
+              AC Milan <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 2 -->
+          <div class="team-card" data-members="Med Chamekh&#10;Med Mahdhaoui">
+            <div class="team-icon-small">🇧🇷</div>
+            <div class="team-name">
+              Santos <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 3 -->
+          <div
+            class="team-card"
+            data-members="Ilyes Sraieb&#10;Hamza Ben El Haj Yahya"
+          >
+            <div class="team-icon-small">🇹🇳</div>
+            <div class="team-name">
+              Italy <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 4 -->
+          <div class="team-card" data-members="Ammar Mtimet&#10;Rayen Omar">
+            <div class="team-icon-small">🇦🇷</div>
+            <div class="team-name">
+              Boca Juniors <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 5 -->
+          <div class="team-card" data-members="Younes Grira&#10;Bayrem Robei">
+            <div class="team-icon-small">🇫🇷</div>
+            <div class="team-name">
+              Olympique Marseille <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 6 -->
+          <div
+            class="team-card"
+            data-members="Rayen Essayeb&#10;Ahmed Bayounes"
+          >
+            <div class="team-icon-small">🇪🇸</div>
+            <div class="team-name">
+              FC Barcelona <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 7 -->
+          <div class="team-card" data-members="Adem Abri&#10;Firas Trabelsi">
+            <div class="team-icon-small">🇪🇸</div>
+            <div class="team-name">
+              Real Madrid <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 8 -->
+          <div
+            class="team-card"
+            data-members="Jihed Mahdhaoui&#10;Iyed Ounalah"
+          >
+            <div class="team-icon-small">🇧🇷</div>
+            <div class="team-name">
+              Flamengo <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 9 -->
+          <div
+            class="team-card"
+            data-members="Ahmed Yassine Chammem&#10;Sajed Louleb"
+          >
+            <div class="team-icon-small">🇩🇪</div>
+            <div class="team-name">
+              Borussia Dortmund <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 10 -->
+          <div class="team-card" data-members="_mkh92&#10;Dali Lanouar">
+            <div class="team-icon-small">🇫🇷</div>
+            <div class="team-name">
+              PSG <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+
+          <!-- Team 11 -->
+          <div class="team-card" data-members="Iyed Ounis&#10;Khalil Sebei">
+            <div class="team-icon-small">🇶🇦</div>
+            <div class="team-name">
+              Al Sadd <span style="font-size: 12px">ⓘ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROUPS TAB -->
+      <div id="groups" class="tab-content">
+        <div class="waiting-msg">waiting for the draw...</div>
+      </div>
+
+      <!-- FIXTURES TAB -->
+      <div id="fixtures" class="tab-content">
+        <div class="waiting-msg">waiting for the draw...</div>
+      </div>
+
+      <!-- TABLE TAB -->
+      <div id="table" class="tab-content">
+        <div class="waiting-msg">waiting for the draw...</div>
+      </div>
+      <br />
+      <div class="zb">
+        <p>
+          ⓘ About : <br />
+          Qualifications are composed of a group phase , every group is composed
+          of 3 teams that conquere to play in the Cup. The first two teams of
+          each group are qualified, there will be a Home Match and an Away Match
+          for every fixture. Good luck !
+        </p>
+      </div>
+      <br />
+      <div class="zbb">
+        <p>© essayeb</p>
+      </div>
+    </main>
+
+    <script>
+      function switchTab(tabId) {
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.remove("active");
+        });
+
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        document.getElementById(tabId).classList.add("active");
+
+        const buttons = document.querySelectorAll(".nav-btn");
+        buttons.forEach((btn) => {
+          if (btn.getAttribute("onclick").includes(tabId)) {
+            btn.classList.add("active");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
