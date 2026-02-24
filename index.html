@@ -171,7 +171,7 @@
         backdrop-filter: blur(10px); /* Glass effect */
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
-        padding: 20px;
+        padding: 25px;
         position: relative;
         transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
         cursor: help;
@@ -199,6 +199,10 @@
         opacity: 0.5;
       }
 
+      img {
+        width: 100px;
+        height: 100px;
+      }
       /* --- TOOLTIP WIDGET --- */
       .team-card:hover::after {
         content: attr(data-members);
@@ -238,6 +242,17 @@
         color: gray;
         text-align: center;
       }
+      .team-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .team-header img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+      }
     </style>
   </head>
   <body>
@@ -259,105 +274,112 @@
       <!-- TEAMS TAB -->
       <div id="teams" class="tab-content active">
         <div class="teams-grid">
-          <!-- Team 1 -->
-          <div class="team-card" data-members="Adem Fadhli&#10;Wael Ayeb">
-            <div class="team-icon-small">🇮🇹</div>
-            <div class="team-name">
-              AC Milan <span style="font-size: 12px">ⓘ</span>
-            </div>
-          </div>
 
-          <!-- Team 2 -->
-          <div class="team-card" data-members="Med Chamekh&#10;Med Mahdhaoui">
-            <div class="team-icon-small">🇧🇷</div>
-            <div class="team-name">
-              Santos <span style="font-size: 12px">ⓘ</span>
+          <!-- AC Milan -->
+          <div id="acmilan" class="team-card" data-members="Adem Fadhli&#10;Wael Ayeb">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg" alt="AC Milan">
+              <div class="team-name">AC Milan <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 3 -->
-          <div
-            class="team-card"
-            data-members="Ilyes Sraieb&#10;Hamza Ben El Haj Yahya"
-          >
-            <div class="team-icon-small">🇮🇹</div>
-            <div class="team-name">
-              Italy <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Santos -->
+          <div id="santos" class="team-card" data-members="Med Chamekh&#10;Med Mahdhaoui">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Santos_logo.svg/960px-Santos_logo.svg.png" alt="Santos">
+              <div class="team-name">Santos FC <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 4 -->
-          <div class="team-card" data-members="Ammar Mtimet&#10;Rayen Omar">
-            <div class="team-icon-small">🇦🇷</div>
-            <div class="team-name">
-              Boca Juniors <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Italy -->
+          <div id="italy" class="team-card" data-members="Ilyes Sraieb&#10;Hamza Ben El Haj Yahya">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Logo_Italy_National_Football_Team_-_2023.svg" alt="Italy">
+              <div class="team-name">Italy <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 5 -->
-          <div class="team-card" data-members="Younes Grira&#10;Bayrem Robei">
-            <div class="team-icon-small">🇫🇷</div>
-            <div class="team-name">
-              Olympique Marseille <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Boca Juniors -->
+          <div id="boca" class="team-card" data-members="Ammar Mtimet&#10;Rayen Omar">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Boca_Juniors_logo18.svg" alt="Boca">
+              <div class="team-name">Boca Juniors <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 6 -->
-          <div
-            class="team-card"
-            data-members="Rayen Essayeb&#10;Ahmed Bayounes"
-          >
-            <div class="team-icon-small">🇪🇸</div>
-            <div class="team-name">
-              FC Barcelona <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Marseille -->
+          <div id="marseille" class="team-card" data-members="Younes Grira&#10;Bayrem Robei">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Olympique_Marseille_logo.svg" alt="Marseille">
+              <div class="team-name">Olympique Marseille <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 7 -->
-          <div class="team-card" data-members="Adem Abri&#10;Firas Trabelsi">
-            <div class="team-icon-small">🇪🇸</div>
-            <div class="team-name">
-              Real Madrid <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Barcelona -->
+          <div id="barca" class="team-card" data-members="Rayen Essayeb&#10;Ahmed Bayounes">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" alt="Barcelona">
+              <div class="team-name">FC Barcelona <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 8 -->
-          <div
-            class="team-card"
-            data-members="Jihed Mahdhaoui&#10;Iyed Ounalah"
-          >
-            <div class="team-icon-small">🇧🇷</div>
-            <div class="team-name">
-              Flamengo <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Real Madrid -->
+          <div id="real" class="team-card" data-members="Adem Abri&#10;Firas Trabelsi">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" alt="Real Madrid">
+              <div class="team-name">Real Madrid <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 9 -->
-          <div
-            class="team-card"
-            data-members="Ahmed Yassine Chammem&#10;Sajed Louleb"
-          >
-            <div class="team-icon-small">🇩🇪</div>
-            <div class="team-name">
-              Borussia Dortmund <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Flamengo -->
+          <div id="flamengo" class="team-card" data-members="Jihed Mahdhaoui&#10;Iyed Ounalah">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Clube_de_Regatas_do_Flamengo_logo.svg/500px-Clube_de_Regatas_do_Flamengo_logo.svg.png" alt="Flamengo">
+              <div class="team-name">Flamengo <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 10 -->
-          <div class="team-card" data-members="_mkh92&#10;Dali Lanouar">
-            <div class="team-icon-small">🇫🇷</div>
-            <div class="team-name">
-              PSG <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- Borussia Dortmund -->
+          <div id="borussia" class="team-card" data-members="Ahmed Yassine Chammem&#10;Sajed Louleb">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg" alt="Dortmund">
+              <div class="team-name">Borussia Dortmund <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
-
-          <!-- Team 11 -->
-          <div class="team-card" data-members="Iyed Ounis&#10;Khalil Sebei">
-            <div class="team-icon-small">🇶🇦</div>
-            <div class="team-name">
-              Al Sadd <span style="font-size: 12px">ⓘ</span>
+        
+          <!-- PSG -->
+          <div id="psg" class="team-card" data-members="_mkh92&#10;Dali Lanouar">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg" alt="PSG">
+              <div class="team-name">PSG <span style="font-size:12px">ⓘ</span></div>
             </div>
           </div>
+        
+          <!-- Al Sadd -->
+          <div id="sadd" class="team-card" data-members="Iyed Ounis&#10;Khalil Sebei">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/fr/c/c6/Al-Sadd_Sports_Club_logo.png?20230603000101" alt="Al Sadd">
+              <div class="team-name">Al Sadd <span style="font-size:12px">ⓘ</span></div>
+            </div>
+          </div>
+        
+          <!-- Manchester United -->
+          <div id="manutd" class="team-card" data-members="Mohamed Aziz Halmous&#10;Hazem">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg" alt="Man United">
+              <div class="team-name">Manchester United <span style="font-size:12px">ⓘ</span></div>
+            </div>
+          </div>
+        
+          <!-- Inter -->
+          <div id="inter" class="team-card" data-members="Jassem Rahmani&#10;Wissem Lamouri">
+            <div class="team-header">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg" alt="Inter">
+              <div class="team-name">Inter Milan <span style="font-size:12px">ⓘ</span></div>
+            </div>
+          </div>
+        
+        </div>
         </div>
       </div>
 
@@ -413,4 +435,3 @@
     </script>
   </body>
 </html>
-
